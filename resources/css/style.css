@@ -1,0 +1,64 @@
+/*-------------------------*/
+/*    INITIAL SETUP        */
+/*-------------------------*/
+
+html {
+    padding-bottom: 50px;
+}
+
+/*-------------------------*/
+/*    REUSABLE CONTENT     */
+/*-------------------------*/
+.box { 
+    margin-top: 40px; 
+
+}
+
+.container { max-width: 1000px; width: 85%;}
+
+.box h3 {
+    padding-top: 70px;
+    margin-bottom: 20px;
+}
+
+.deleteColumn {
+    width: 50px;
+    
+}
+
+.deleteCell {
+    text-align: center;
+}
+.buttonContainer {
+    display: inline-block;
+   
+}
+
+
+/*-------------------------*/
+/*      MODULES TABLE      */
+/*-------------------------*/
+
+.selectedModules tbody tr th {
+    width: 80px;
+} 
+
+.clearTableButton {
+    float: right;
+}
+
+/*-------------------------*/
+/*      SAVE PLAN BAR      */
+/*-------------------------*/
+
+.savePlanBar {
+    margin-top: 30px;
+}
+.savePlan .alert {
+    margin-top: 30px;
+    display: none;
+}
+
+
+
+
