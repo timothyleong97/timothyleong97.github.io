@@ -43,9 +43,16 @@ html {
     width: 80px;
 } 
 
-.clearTableButton {
-    float: right;
+
+
+/*-------------------------*/
+/* PANEL FOR MODULE SPLIT  */
+/*   AND CLEAR TABLE       */
+/*-------------------------*/
+.dropdown label {
+    margin-right: 10px;
 }
+
 
 /*-------------------------*/
 /*      SAVE PLAN BAR      */
