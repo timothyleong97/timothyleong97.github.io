@@ -1,3 +1,59 @@
+
+/********************************/
+/*       INITIALISATION         */
+/********************************/
+
+//repopulatePlansTable();
+repopulateModulesTable();
+
+
+/********************************/
+/*     REUSEABLE FUNCTIONS      */
+/********************************/
+
+/*
+    getters and setters for the localStorage elements
+*/
+
+function getSavedPlans() {
+    if(localStorage.getItem('savedPlans') == null) {
+        localStorage.setItem('savedPlans','');
+        return "";
+    } else {
+        return localStorage.getItem('savedPlans');
+    }
+    
+}
+
+//save the html straight
+function setSavedPlans() {
+    localStorage.setItem('savedPlans',$(".js--plansTable tbody").html());
+}
+
+function getModuleList() {
+    if(localStorage.getItem('moduleList') == null) {
+        localStorage.setItem('moduleList','');
+        return "";
+    } else {
+        return localStorage.getItem('moduleList');
+    }
+    
+}
+
+//save the html straight
+function setModuleList() {
+    localStorage.setItem('moduleList',$(".js--modTable tbody").html());
+}
+
+
+function repopulatePlansTable() {
+    $('.js--plansTable tbody').html(getSavedPlans());
+}
+
+function repopulateModulesTable() {
+    $('.js--modTable tbody').html(getModuleList());
+}
+
 /*
     navigation scroll for navbar
 */
@@ -53,7 +109,7 @@ $(function() {
   $( ".sortableTable" ).sortable();
 });
 
-//capture the selected module from the search bar
+//add the selected module from the search bar to the module table
 $("input.awesomplete").on("awesomplete-selectcomplete", function(){
     var module = $("input.awesomplete").val();
     var arr = module.split("-");
@@ -65,10 +121,10 @@ $("input.awesomplete").on("awesomplete-selectcomplete", function(){
                 + arr[0] + 
             "</th><td>" +
                 arr[1] +
-            "</td><td class='deleteCell'><div class = 'buttonContainer'><button type=\"button\" class=\"close\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button></div></td>");
-    
+            "</td><td class='deleteCell'><div class = 'buttonContainer'><button type=\"button\" class=\"close deleteModule\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button></div></td>");
+    setModuleList();
     $("input.awesomplete").val("");
-    
+ 
 });
 
 /*
@@ -81,27 +137,42 @@ $(document).on('click','.close', function(){
 
 
 /*
-    controls for the alerts for saving new plan
+    ------------------------LOGIC FOR THE SAVE AS NEW... BUTTON---------------------------- 
 */
 
-$(".saveAsNewButton").on('click', function(){
-    if ($('.savePlanBar input').val()==""){
-        $('.savePlan .no-name ').show(200);
-        $('.savePlan .savedSuccessfully ').hide();
-         setTimeout(function(){
-            $('.savePlan .no-name ').hide(300);
-        }, 1500);
-        
-    } else {
-        $('.savePlan .no-name ').hide(200);
+function emptyFieldAlert() {
+    $('.savePlan .no-name').show(200);
+    $('.savePlan .savedSuccessfully').hide();
+    setTimeout(function(){
+        $('.savePlan .no-name').hide(300);
+    }, 1500);
+}
+
+
+function successfulSaveAlert() {
+     $('.savePlan .no-name ').hide(200);
         $('.savePlan .savedSuccessfully ').html("<strong>" + $('.savePlanBar input').val()+"</strong> saved!")
         $('.savePlan .savedSuccessfully ').show(200);
         setTimeout(function(){
             $('.savePlan .savedSuccessfully ').hide(300);
         }, 1500);
-        
+}
+
+/*
+    controls for the alerts for saving NEW plan
+*/
+
+$(".saveAsNewButton").on('click', function(){
+    if ($('.savePlanBar input').val()==""){
+        emptyFieldAlert();
+    } else {
+        successfulSaveAlert();
     }
 })
+
+
+//actually save the plan in localStorage
+
 
 /*
     clear table and close modal
@@ -111,3 +182,16 @@ $('.clearAllButton').click(function(){
     $(".js--modTable tbody").html("");
     $('#exampleModal').modal('hide');
 })
+
+
+/*
+   prevent enter key on an empty search bar from reloading the page
+*/
+
+$('#moduleSearchBar').keypress(function(event){
+    var keycode = (event.keyCode ? event.keyCode : event.which);
+    if(keycode == '13'){
+        event.preventDefault();
+    }
+});
+
