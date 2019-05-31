@@ -41,6 +41,22 @@ html {
 
 
 /*-------------------------*/
+/*      PLANS TABLE      */
+/*-------------------------*/
+
+.planLink:link,
+.planLink:visited {
+    color:  #848484;
+}
+
+.planLink:active,
+.planLink:hover {
+    color: black;
+    text-decoration: none;
+}
+
+
+/*-------------------------*/
 /*      MODULES TABLE      */
 /*-------------------------*/
 

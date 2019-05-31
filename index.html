@@ -59,36 +59,6 @@
               </thead>
               
               <tbody>
-                   <tr>
-                      <th>Standard</th>
-                       
-                      
-                      <td class="deleteCell">
-                          <div class = 'buttonContainer'>
-                              <button type="button" class="close" aria-label="Close">
-                              <span aria-hidden="true">&times;</span></button>
-                          </div>
-                      </td>
-                </tr>
-                <tr>
-                  <th>Intense</th>
-                  <td class="deleteCell">
-                          <div class = 'buttonContainer'>
-                                <button type="button" class="close" aria-label="Close">
-                                <span aria-hidden="true">&times;</span></button>
-                          </div>
-                  </td>
-                </tr>
-                <tr>
-                  <th>Relaxed</th>
-                  <td class="deleteCell">
-                          <div class = 'buttonContainer'>
-                                <button type="button" class="close" aria-label="Close">
-                                <span aria-hidden="true">&times;</span></button>
-
-                          </div>
-                  </td>
-                </tr>
               </tbody>
               
         </table>
@@ -127,6 +97,7 @@
               </thead>
                 
               <tbody class="sortableTable">
+            
               </tbody>
                 
             </table>
@@ -161,7 +132,7 @@
           </div>   
           
           
-          <button class="btn btn-outline-danger clearTableButton" type="button" data-toggle="modal" data-target="#exampleModal">Clear Table</button> 
+          <button class="btn btn-outline-danger clearTableButton" type="button" data-toggle="modal" data-target="#clearTableModal">Clear Table</button> 
           
           </div> 
           
@@ -206,11 +177,11 @@
 
 
                             <!-- Modal -->
-                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="clearTableModal" tabindex="-1" role="dialog" aria-labelledby="clearTableModalLabel" aria-hidden="true">
                               <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                   <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Clear Table?</h5>
+                                    <h5 class="modal-title" id="clearTableModalLabel">Clear Table?</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                       <span aria-hidden="true">&times;</span>
                                     </button>
@@ -234,6 +205,9 @@
                 <div class="alert alert-danger no-name" role="alert">
                   You need to enter a name!
                 </div>
+                <div class="alert alert-danger duplicate-name" role="alert">
+                  There is already a plan with this name!
+                </div>
                 <div class="alert alert-success savedSuccessfully" role="alert">
                 </div>
             </div>
@@ -243,9 +217,27 @@
         
       
       </div>
-      
-
-      
+    
+<!--      Modal for deleting a plan-->
+    <div class="modal fade" id="deletePlanModal" tabindex="-1" role="dialog" aria-labelledby="deletePlanModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deletePlanModalLabel">Confirm delete?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        This action cannot be undone!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" id="confirmDeletePlanButton">Delete plan</button>
+      </div>
+    </div>
+  </div>
+</div>
       
 
    
