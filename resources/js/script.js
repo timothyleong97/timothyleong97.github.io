@@ -2,7 +2,8 @@
 /********************************/
 /*       INITIALISATION         */
 /********************************/
-
+getSavedPlans();
+getModuleList();
 repopulatePlansTable();
 repopulateModulesTable();
 
