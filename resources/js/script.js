@@ -273,6 +273,7 @@ $(".saveButton").on('click', function(){
 $('.clearAllButton').click(function(){
     $(".js--modTable tbody").html("");
     $('#clearTableModal').modal('hide');
+    setModuleList();
 })
 
 
