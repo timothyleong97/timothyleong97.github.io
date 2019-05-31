@@ -18,7 +18,6 @@ repopulateModulesTable();
 //each plan is a JSON object - {label: "plan1", value: "html"}
 function getSavedPlans() {
     if(localStorage.getItem('savedPlans') == null) {
-        alert("set var")
         localStorage.setItem('savedPlans','[]');
         return [];
     } else {
@@ -273,7 +272,7 @@ $(".saveButton").on('click', function(){
 
 $('.clearAllButton').click(function(){
     $(".js--modTable tbody").html("");
-    $('#exampleModal').modal('hide');
+    $('#clearTableModal').modal('hide');
 })
 
 
