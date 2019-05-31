@@ -2,8 +2,7 @@
 /********************************/
 /*       INITIALISATION         */
 /********************************/
-getSavedPlans();
-getModuleList();
+
 repopulatePlansTable();
 repopulateModulesTable();
 
@@ -19,6 +18,7 @@ repopulateModulesTable();
 //each plan is a JSON object - {label: "plan1", value: "html"}
 function getSavedPlans() {
     if(localStorage.getItem('savedPlans') == null) {
+        alert("set var")
         localStorage.setItem('savedPlans','[]');
         return [];
     } else {
