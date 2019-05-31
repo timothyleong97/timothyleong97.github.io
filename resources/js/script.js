@@ -20,14 +20,14 @@ function getSavedPlans() {
         localStorage.setItem('savedPlans','');
         return "";
     } else {
-        return localStorage.getItem('savedPlans');
+        return JSON.parse(localStorage.getItem('savedPlans'));
     }
     
 }
 
-//save the html straight
+//save each plan as a JSON object - {label: "plan1", value: "html"}
 function setSavedPlans() {
-    localStorage.setItem('savedPlans',$(".js--plansTable tbody").html());
+    
 }
 
 function getModuleList() {

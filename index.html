@@ -7,6 +7,7 @@
     <link rel="stylesheet" src="vendors/css/jquery-ui.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="vendors/css/awesomplete.css">
+    <link href="https://unpkg.com/ionicons@4.5.5/dist/css/ionicons.min.css" rel="stylesheet">
     <link href="resources/css/style.css" rel="stylesheet" type = "text/css">
       
     <title>Module Planner</title>
@@ -58,6 +59,36 @@
               </thead>
               
               <tbody>
+                   <tr>
+                      <th>Standard</th>
+                       
+                      
+                      <td class="deleteCell">
+                          <div class = 'buttonContainer'>
+                              <button type="button" class="close" aria-label="Close">
+                              <span aria-hidden="true">&times;</span></button>
+                          </div>
+                      </td>
+                </tr>
+                <tr>
+                  <th>Intense</th>
+                  <td class="deleteCell">
+                          <div class = 'buttonContainer'>
+                                <button type="button" class="close" aria-label="Close">
+                                <span aria-hidden="true">&times;</span></button>
+                          </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Relaxed</th>
+                  <td class="deleteCell">
+                          <div class = 'buttonContainer'>
+                                <button type="button" class="close" aria-label="Close">
+                                <span aria-hidden="true">&times;</span></button>
+
+                          </div>
+                  </td>
+                </tr>
               </tbody>
               
         </table>
@@ -104,10 +135,7 @@
            
         </div>
         
-<!--
-       <button class="btn btn-outline-danger clearTableButton" type="button" data-toggle="modal" data-target="#exampleModal">Clear Table</button> 
-          
--->
+
 <!--    Panel containing dropdown for selecting semesters and also a button to clear table -->
          <div class="panel d-flex justify-content-between">
              
@@ -224,7 +252,6 @@
     <script src="vendors/js/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/ionicons@4.5.5/dist/ionicons.js"></script>
     <script src="vendors/js/jquery-ui.min.js"></script>
     <script src="vendors/js/awesomplete.js"></script>
     <script src="resources/js/script.js"></script>
