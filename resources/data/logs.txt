@@ -1,6 +1,7 @@
+getModuleList - nothing to change it just returns a string
+setModuleList - nothing to change because getCurrrentModules has been updated
+getCurrentModules - returns modules + ?sep? + breakdown
+repopulateModulesTable
 
 
-
-
-need a "start from" box for semester numbering
-
+prevent duplicates from being entered into modules

@@ -54,13 +54,16 @@ function getModuleList() {
     
 }
 
-//SAVE THE HTML STRAIGHT
+//SAVE CURRENT STATE OF MODULE TABLE IN LOCAL STORAGE
 function setModuleList() {
     localStorage.setItem('moduleList', getCurrentModules());
 }
 
+//?sep? separates the modules from the breakdown
 function getCurrentModules() {
-    return $(".js--modTable tbody").html();
+    var modules = $(".js--modTable tbody").html();
+    var breakdown = $(".table-list table").html();
+    return modules + "_split_" + breakdown;
 }
 
 //get savedPlans, join the html, then set the plansTable body html
@@ -97,7 +100,7 @@ function repopulatePlansSuggestion() {
         var str = "";
         for (var i = 0; i < arr.length; i++) {
             var planName = arr[i].name;
-            //create a tr
+            
             str +=
            "<a class=\"dropdown-item\" href=\"\">" + planName +"</a>";
         }
@@ -107,12 +110,18 @@ function repopulatePlansSuggestion() {
 }
 
 function repopulateModulesTable() {
-    $('.js--modTable tbody').html(getModuleList());
+    var modulesAndBreakdowns = getModuleList();
+    if (modulesAndBreakdowns != "") {
+        var arr = modulesAndBreakdowns.split("_split_");
+        $('.js--modTable tbody').html(arr[0]);
+        $('.table-list table').html(arr[1]);    
+        
+    }    
 }
 
 function repopulateSavePlanBarInput(){
     if (localStorage.getItem('lastInput')==null) {
-        localStorage.setItem('lastInput','');
+        localStorage.setItem('lastInput',"");
     } else {
         $('.savePlanBar input').val(localStorage.getItem('lastInput'));
     }
@@ -125,9 +134,9 @@ function setSavePlanBarInput(){
 
 
 function updateNumSems() {
-    var lastNum = $('.js--split-sem .dropdown-menu .dropdown-item:last-child').text();
-    var numMods = $('.js--modTable tbody tr').length;
-    var numSems = Math.ceil(numMods/4);    
+    var lastNum = $('.js--split-sem .dropdown-menu .dropdown-item:last-child').text();//1
+    var numMods = $('.js--modTable tbody tr').length;//0
+    var numSems = Math.ceil(numMods/4);    //0
     if (numMods > 0) {
         $("#dropdownMenuLink").removeClass("disabled");
     }
@@ -143,6 +152,7 @@ function updateNumSems() {
     if (numSems === 0) {
         $("#dropdownMenuLink").addClass("disabled");
     }
+
 }
 
 
@@ -394,12 +404,16 @@ $('body').on('click', '.planLink', function(e){
      $('html, body').animate({
                 scrollTop: $("#modules").offset().top
             }, 1000);
-    
-    $(".js--modTable tbody").html(html);
+    var arr = html.split("_split_");
+    $(".js--modTable tbody").html(arr[0]);
+    $('.table-list table').html(arr[1]); 
     setModuleList();
     setSavePlanBarInput();
     
 })
+
+
+
 
 /*
     DELETING A PLAN
@@ -468,10 +482,26 @@ $('body').on('click', '.js--split-sem .dropdown-menu .dropdown-item', function(e
         }
        
     }
-    
+    setModuleList();
     makeSortable();
 })
 
 
-//capture current view of the semester 
-//make table sortable
+//capture current view of the semester and put it in save plans and localStorage, should be repopulated on page load
+//add a "start numbering from" box for the table
+
+
+$("#selectSemStartNumber").change(function(){
+    var selectedNum = parseInt($("#selectSemStartNumber option:selected").text());
+    renumberSemesters(selectedNum);
+})
+
+function renumberSemesters(num) {
+    var numHeaders = $('.table-list table tbody').length;
+    var currentTBody = $('.table-list table tbody').first();
+    for(var i = 1; i <= numHeaders; i++) {
+        currentTBody.find('tr').first().find('th').text("Semester " + num);
+        currentTBody = currentTBody.next();
+        num++;
+    }
+}
