@@ -197,12 +197,12 @@ $('a[href*="#"]')
     MAKE THE TABLE SORTABLE
 */
 
-$(function() {
+function makeSortable() {
   $( ".connected-sortable" ).sortable({
       connectWith: ".connected-sortable",
       cancel: ".ui-disabled"
   }).disableSelection();
-});
+};
 
 /*
     ADD THE SELECTED MODULE FROM THE SEARCH BAR TO THE MODULE TABLE
@@ -468,8 +468,10 @@ $('body').on('click', '.js--split-sem .dropdown-menu .dropdown-item', function(e
         }
        
     }
+    
+    makeSortable();
 })
 
 
-
-
+//capture current view of the semester 
+//make table sortable
