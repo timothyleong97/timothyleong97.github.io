@@ -7,13 +7,14 @@ repopulatePlansTable();
 repopulatePlansSuggestion();
 repopulateModulesTable();
 repopulateSavePlanBarInput();
-
+updateNumSems();
+ 
 /********************************/
 /*     REUSEABLE FUNCTIONS      */
 /********************************/
 
 /*
-    getters and setters for the localStorage elements
+    GETTERS AND SETTERS FOR THE LOCALSTORAGE ELEMENTS
 */
 
 //each plan is a JSON object - {label: "plan1", value: "html"}
@@ -53,7 +54,7 @@ function getModuleList() {
     
 }
 
-//save the html straight
+//SAVE THE HTML STRAIGHT
 function setModuleList() {
     localStorage.setItem('moduleList', getCurrentModules());
 }
@@ -121,8 +122,26 @@ function setSavePlanBarInput(){
     var text = $('.savePlanBar input').val();
     localStorage.setItem('lastInput', text);
 }
+
+
+function updateNumSems() {
+    var lastNum = $('.js--split-sem .dropdown-menu .dropdown-item:last-child').text();
+    var numMods = $('.js--modTable tbody tr').length;
+    var numSems = Math.ceil(numMods/4);    
+    if (numSems > lastNum) {
+        while(numSems > lastNum){
+            lastNum++;                   
+            $('.js--split-sem .dropdown-menu').append(
+                    "<a class= 'dropdown-item' href = ''>" + lastNum +"</a>");  
+            }
+        } else if (numSems < lastNum) {
+            $('.js--split-sem .dropdown-menu .dropdown-item:last-child').remove();
+        }
+}
+
+
 /*
-    navigation scroll for navbar
+    NAVIGATION SCROLL FOR NAVBAR
 */
 
 $('a[href*="#"]')
@@ -153,7 +172,7 @@ $('a[href*="#"]')
 
 
 /* 
-    load the autocomplete 
+    LOAD THE AUTOCOMPLETE 
 */
 
  $.getJSON("vendors/data/moduleList.json", function(data) {
@@ -169,14 +188,16 @@ $('a[href*="#"]')
   
  
 /*
-    make the table sortable
+    MAKE THE TABLE SORTABLE
 */
 
 $(function() {
   $( ".sortableTable" ).sortable();
 });
 
-//add the selected module from the search bar to the module table
+/*
+    ADD THE SELECTED MODULE FROM THE SEARCH BAR TO THE MODULE TABLE
+*/
 $("input.awesomplete").on("awesomplete-selectcomplete", function(){
     var module = $("input.awesomplete").val();
     var arr = module.split("-");
@@ -191,17 +212,19 @@ $("input.awesomplete").on("awesomplete-selectcomplete", function(){
             "</td><td class='deleteCell'><div class = 'buttonContainer'><button type=\"button\" class=\"close deleteModule\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button></div></td>");
     setModuleList();
     $("input.awesomplete").val("");
+    updateNumSems();
  
 });
 
 /*
-    delete row when close button is clicked for modules 
+    DELETE ROW WHEN CLOSE BUTTON IS CLICKED (FOR MODULES) 
 */
 
 
 $(document).on('click','.deleteModule', function(){
     $(this).parent().parent().parent().remove();
     setModuleList();
+    updateNumSems();
 })
 
 
@@ -320,7 +343,7 @@ $(".saveButton").on('click', function(){
 
 
 /*
-    clear table and close modal
+    CLEAR TABLE AND CLOSE MODAL
 */
 
 $('.clearAllButton').click(function(){
@@ -331,7 +354,7 @@ $('.clearAllButton').click(function(){
 
 
 /*
-   prevent enter key on an empty search bar from reloading the page
+   PREVENT ENTER KEY ON AN EMPTY SEARCH BAR FROM RELOADING THE PAGE
 */
 
 $('#moduleSearchBar').keypress(function(event){
@@ -342,7 +365,7 @@ $('#moduleSearchBar').keypress(function(event){
 });
 
 /*
-    Loading a plan by clicking on a plan name
+    LOADING A PLAN BY CLICKING ON A PLAN NAME
 */
 
 
@@ -370,7 +393,7 @@ $('body').on('click', '.planLink', function(e){
 })
 
 /*
-    Deleting a plan
+    DELETING A PLAN
 */
 $('body').on('click', '.deletePlan', function(){
     var planName = $(this).parent().parent().prev().text();
@@ -398,11 +421,17 @@ $('body').on('click', '.deletePlan', function(){
         
 })
 
-//when clicking on the plans from the dropdown, do nothing except populate the input with the plan name
+//WHEN CLICKING ON THE PLANS FROM THE DROPDOWN, DO NOTHING EXCEPT POPULATE THE INPUT WITH THE PLAN NAME
 $('body').on('click','.js--dropdown-menu a', function(e){
     e.preventDefault();
     var planName = $(this).text();
     $('.savePlanBar input').val(planName);
     setSavePlanBarInput();
 })
+
+
+
+
+
+
 
