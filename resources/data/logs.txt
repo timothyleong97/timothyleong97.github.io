@@ -1,7 +1,6 @@
-For the function header//capture the selected module from the search bar
-//possible bug on empty table. See https://www.codemag.com/Article/1511031/CRUD-in-HTML-JavaScript-and-jQuery
-//change the a click!!!
 
 
 
-module suggestion a need to overwrite.
+
+need a "start from" box for semester numbering
+

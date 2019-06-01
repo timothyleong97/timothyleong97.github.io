@@ -93,5 +93,14 @@ html {
 }
 
 
+/*-------------------------*/
+/*     LIST OF TABLES      */
+/*-------------------------*/
 
+.table-list table { margin-bottom: 60px; }
+
+
+.ui-disabled {
+    background-color: #d1d1d1 !important;
+}
 

@@ -128,6 +128,9 @@ function updateNumSems() {
     var lastNum = $('.js--split-sem .dropdown-menu .dropdown-item:last-child').text();
     var numMods = $('.js--modTable tbody tr').length;
     var numSems = Math.ceil(numMods/4);    
+    if (numMods > 0) {
+        $("#dropdownMenuLink").removeClass("disabled");
+    }
     if (numSems > lastNum) {
         while(numSems > lastNum){
             lastNum++;                   
@@ -137,6 +140,9 @@ function updateNumSems() {
         } else if (numSems < lastNum) {
             $('.js--split-sem .dropdown-menu .dropdown-item:last-child').remove();
         }
+    if (numSems === 0) {
+        $("#dropdownMenuLink").addClass("disabled");
+    }
 }
 
 
@@ -192,7 +198,10 @@ $('a[href*="#"]')
 */
 
 $(function() {
-  $( ".sortableTable" ).sortable();
+  $( ".connected-sortable" ).sortable({
+      connectWith: ".connected-sortable",
+      cancel: ".ui-disabled"
+  }).disableSelection();
 });
 
 /*
@@ -430,7 +439,36 @@ $('body').on('click','.js--dropdown-menu a', function(e){
 })
 
 
+$('body').on('click', '.js--split-sem .dropdown-menu .dropdown-item', function(e) {
+    e.preventDefault();
+    var indexofMod = 1;
+    var numSems = parseInt($(this).text());
+    var numMods = $('.js--modTable tbody tr').length;
+    //add code to delete whole table
+    $('.table-list table tbody').remove();
+    for(var i = 1; i <= numSems; i++) {
 
+        $('.table-list table').append("<tbody class='connected-sortable'><tr class='ui-disabled'><th colspan='2'>Semester "+i+"</th></tr></tbody>");
+        
+        var segment = $('.table-list table tbody').last();
+        var modsPerSem = Math.floor(numMods/numSems);
+        if (i == numSems) {
+            for (var k = indexofMod; k <= numMods; k++) {
+                var row = $('.js--modTable tbody tr:nth-child('+k+")").clone();
+                row.find(".deleteCell").remove();
+                segment.append(row);
+            }
+        } else {
+            for(var j = 0; j < modsPerSem; j++) {
+                var row = $('.js--modTable tbody tr:nth-child('+indexofMod+")").clone();
+                row.find(".deleteCell").remove();
+                segment.append(row);
+                indexofMod++;
+            }    
+        }
+       
+    }
+})
 
 
 
