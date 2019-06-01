@@ -108,10 +108,10 @@
         
 
 <!--    Panel containing dropdown for selecting semesters and also a button to clear table -->
-         <div class="panel d-flex justify-content-between">
+         <div class="panel d-flex">
              
        
-            <div class="dropdown">
+            <div class="dropdown flex-grow-1">
               <label>Split my modules across :</label>
               <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Select number
@@ -124,10 +124,6 @@
                 <a class="dropdown-item" href="#">4</a>
                 <a class="dropdown-item" href="#">5</a>
                 <a class="dropdown-item" href="#">6</a>
-                <a class="dropdown-item" href="#">7</a>
-                <a class="dropdown-item" href="#">8</a>
-                <a class="dropdown-item" href="#">9</a>
-                <a class="dropdown-item" href="#">10</a>
               </div>
           </div>   
           
@@ -168,6 +164,19 @@
             <div class = "savePlan">
                 
                 <div class="input-group savePlanBar">
+                    <div class="input-group-prepend">
+                        <!--          Dropdown button           -->
+                        <button class="btn btn-outline-secondary dropdown-toggle js--dropdown" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Current plans</button>
+                        <!--           Dropdown menu            -->
+                        <div class="dropdown-menu js--dropdown-menu">
+<!--
+                          <a class="dropdown-item" href="#">Action</a>
+                          <a class="dropdown-item" href="#">Another action</a>
+                          <a class="dropdown-item" href="#">Something else here</a>
+-->
+                        </div>
+                        
+                      </div>
                       <input type="text" class="form-control" placeholder="Name of plan..." aria-label="Name of plan" aria-describedby="button-addon4">
 
                         <div class="input-group-append" id="button-addon4">
@@ -218,28 +227,53 @@
       
       </div>
     
-<!--      Modal for deleting a plan-->
+      
+      
+      
+      
+      <!--Modal for deleting a plan-->
     <div class="modal fade" id="deletePlanModal" tabindex="-1" role="dialog" aria-labelledby="deletePlanModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="deletePlanModalLabel">Confirm delete?</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        This action cannot be undone!
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-danger" id="confirmDeletePlanButton">Delete plan</button>
+      <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="deletePlanModalLabel">Confirm delete?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                This action cannot be undone!
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" id="confirmDeletePlanButton">Delete plan</button>
+              </div>
+            </div>
       </div>
     </div>
-  </div>
-</div>
       
-
+      
+    <!--Modal for overwriting a plan-->
+    <div class="modal fade" id="overwritePlanModal" tabindex="-1" role="dialog" aria-labelledby="overwritePlanModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="overwritePlanModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                This action cannot be undone!
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" id="confirmOverwriteButton">Overwrite</button>
+              </div>
+            </div>
+      </div>
+    </div>
+      
    
     <script src="vendors/js/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>

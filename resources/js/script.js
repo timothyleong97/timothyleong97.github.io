@@ -4,8 +4,9 @@
 /********************************/
 
 repopulatePlansTable();
+repopulatePlansSuggestion();
 repopulateModulesTable();
-
+repopulateSavePlanBarInput();
 
 /********************************/
 /*     REUSEABLE FUNCTIONS      */
@@ -64,28 +65,62 @@ function getCurrentModules() {
 //get savedPlans, join the html, then set the plansTable body html
 function repopulatePlansTable() {
     var arr = getSavedPlans();
-    var str = "";
-    for (var i = 0; i < arr.length; i++) {
-        var planName = arr[i].name;
-        //create a tr
-        str +=
-        "<tr>" +
-            "<th><a href=\"\" class=\"planLink\">" + planName +"</a></th>" +
-                      "<td class=\"deleteCell\">" +
-                          "<div class = 'buttonContainer'>" + 
-                              "<button type=\"button\" class=\"close deletePlan\" aria-label=\"Close\">" +
-                            "<span aria-hidden=\"true\">&times;</span></button>" +
-                          "</div>"+
-                      "</td>"+
-                "</tr>"
+    
+        var str = "";
+         for (var i = 0; i < arr.length; i++) {
+             var planName = arr[i].name;
+             //create a tr
+             str +=
+             "<tr>" +
+                 "<th><a href=\"\" class=\"planLink\">" + planName +"</a></th>" +
+                           "<td class=\"deleteCell\">" +
+                               "<div class = 'buttonContainer'>" + 
+                                   "<button type=\"button\" class=\"close deletePlan\" aria-label=\"Close\">" +
+                                 "<span aria-hidden=\"true\">&times;</span></button>" +
+                               "</div>"+
+                           "</td>"+
+                     "</tr>"
+         }
+         $('.js--plansTable tbody').html(str);
+    
+ 
+}
+
+function repopulatePlansSuggestion() {
+    var arr = getSavedPlans();
+
+    if (arr.length === 0) {
+        $('.js--dropdown').prop('disabled',true);
+    } else {
+        $('.js--dropdown').prop('disabled',false);
+        var str = "";
+        for (var i = 0; i < arr.length; i++) {
+            var planName = arr[i].name;
+            //create a tr
+            str +=
+           "<a class=\"dropdown-item\" href=\"\">" + planName +"</a>";
+        }
+        $('.input-group-prepend .dropdown-menu').html(str);
+
     }
-    $('.js--plansTable tbody').html(str);
 }
 
 function repopulateModulesTable() {
     $('.js--modTable tbody').html(getModuleList());
 }
 
+function repopulateSavePlanBarInput(){
+    if (localStorage.getItem('lastInput')==null) {
+        localStorage.setItem('lastInput','');
+    } else {
+        $('.savePlanBar input').val(localStorage.getItem('lastInput'));
+    }
+}
+
+function setSavePlanBarInput(){
+    var text = $('.savePlanBar input').val();
+    localStorage.setItem('lastInput', text);
+}
 /*
     navigation scroll for navbar
 */
@@ -173,6 +208,9 @@ $(document).on('click','.deleteModule', function(){
 /*
     -----------------LOGIC FOR THE SAVE / SAVE AS NEW... BUTTON---------------------------- 
 */
+/*
+    ALERTS
+*/
 
 function emptyFieldAlert() {
     $('.savePlan .no-name').show(200);
@@ -194,18 +232,21 @@ function successfulSaveAlert() {
         }, 1500);
 }
 
-/*
-    controls for the alerts for saving NEW plan
-*/
 
 function updateAndResyncPlans(name, arr) { 
     var obj = makeJSON(name);
     arr.push(obj);
+    resyncPlans(arr);
+}
+
+function resyncPlans(arr) {
     setSavedPlans(arr);
     repopulatePlansTable();
+    repopulatePlansSuggestion();
     successfulSaveAlert();
 }
 
+//CLICKING ON SAVE AS NEW BUTTON
 $(".saveAsNewButton").on('click', function(){
     if ($('.savePlanBar input').val()==""){
         emptyFieldAlert();
@@ -213,6 +254,7 @@ $(".saveAsNewButton").on('click', function(){
         var name = $('.savePlanBar input').val();
         var arr = getSavedPlans();
         var duplicate = false;
+       
         for (var i = 0; i < arr.length;i++) {
             if (arr[i].name== name) {
                 duplicate = true;
@@ -234,11 +276,12 @@ $(".saveAsNewButton").on('click', function(){
         
         //empty the input so that users cannot double click
         $('.savePlanBar input').val("");
+        setSavePlanBarInput();
     }
 })
 
 
-//controls for saving existing plan
+//CLICKING ON SAVE BUTTON
 
 $(".saveButton").on('click', function(){
     if ($('.savePlanBar input').val()==""){
@@ -247,21 +290,31 @@ $(".saveButton").on('click', function(){
         var name = $('.savePlanBar input').val();
         var arr = getSavedPlans();
         var duplicate = false;
+        var index = -1;
         for (var i = 0; i < arr.length;i++) {
             if (arr[i].name== name) {
                 duplicate = true;
+                index = i;
                 break;
             }
         }
         if (duplicate) {
-            //TODO: show the overwrite modal
-            //TODO: save in localStorage
+            //show the overwrite modal
+            $("#overwritePlanModalLabel").text("Overwrite '" + name +"'?");
+            $('#overwritePlanModal').modal('show');
+            //save in localStorage
+            $('#confirmOverwriteButton').click(function(){
+                arr[index].html = getCurrentModules();
+                resyncPlans(arr);
+            })
+            
         } else {
             updateAndResyncPlans(name, arr);
         }
-        
+        //left here for c-a-d purposes that the input is purposely left as is
         //empty the input so that users cannot double click
-        $('.savePlanBar input').val("");
+        // $('.savePlanBar input').val("");
+        
     }
 });
 
@@ -293,7 +346,8 @@ $('#moduleSearchBar').keypress(function(event){
 */
 
 
-$('body').on('click', '.planLink', function(){
+$('body').on('click', '.planLink', function(e){
+    e.preventDefault();
     var planName = $(this).text();
     $('.savePlanBar input').val(planName);
     var plansArr = getSavedPlans();
@@ -305,20 +359,24 @@ $('body').on('click', '.planLink', function(){
         }
     }
     //change the current view
+     $('html, body').animate({
+                scrollTop: $("#modules").offset().top
+            }, 1000);
+    
     $(".js--modTable tbody").html(html);
     setModuleList();
+    setSavePlanBarInput();
     
 })
 
 /*
     Deleting a plan
 */
-
 $('body').on('click', '.deletePlan', function(){
-    var me = $(this);
+    var planName = $(this).parent().parent().prev().text();
+    $("#deletePlanModal .modal-body").text('\"' + planName + '\" will be permanently deleted!' );
     $("#deletePlanModal").modal('show');
     $('#confirmDeletePlanButton').click(function(){
-        var planName = me.parent().parent().prev().text();
         var plansArr = getSavedPlans();
         for(var i = 0; i < plansArr.length; i++) {
             if (plansArr[i].name == planName) {
@@ -328,10 +386,23 @@ $('body').on('click', '.deletePlan', function(){
         }
         setSavedPlans(plansArr);
         repopulatePlansTable();
+        repopulatePlansSuggestion();
+        
+        //if current plan in view is deleted, delete the planName from the savePlanBar input since its not in use anymore
+        if (planName == $('.savePlanBar input').val()){
+            $('.savePlanBar input').val("");
+            setSavePlanBarInput();
+        }
          $("#deletePlanModal").modal('hide');
     })
-    
-//    //TODO: convert this to modal
-    
+        
+})
+
+//when clicking on the plans from the dropdown, do nothing except populate the input with the plan name
+$('body').on('click','.js--dropdown-menu a', function(e){
+    e.preventDefault();
+    var planName = $(this).text();
+    $('.savePlanBar input').val(planName);
+    setSavePlanBarInput();
 })
 

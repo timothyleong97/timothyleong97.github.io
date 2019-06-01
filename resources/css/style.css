@@ -64,7 +64,9 @@ html {
     width: 80px;
 } 
 
-
+.clearTableButton {
+    margin-left: 10px;
+}
 
 /*-------------------------*/
 /* PANEL FOR MODULE SPLIT  */
