@@ -7,7 +7,7 @@ Available at https://timothyleong97.github.io/
 ## Current Features
 
 - Select modules you need to take
-    - Typeahead for easy selection, with data from [NUSMods] (https://nusmods.com)
+    - Typeahead for easy selection, with data from [NUSMods](https://nusmods.com)
     - Buttons to delete individual selections or clear the list entirely
 - Automatically split the modules by given number of semesters
     - Rearrange your modules across semesters
