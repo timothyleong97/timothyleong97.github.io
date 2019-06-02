@@ -8,6 +8,7 @@ repopulatePlansSuggestion();
 repopulateModulesTable();
 repopulateSavePlanBarInput();
 updateNumSems();
+
  
 /********************************/
 /*     REUSEABLE FUNCTIONS      */
@@ -156,6 +157,36 @@ function updateNumSems() {
 }
 
 
+function setSelectedModuleCode(moduleCode) {
+    var arr = [];
+    if (localStorage.getItem('moduleCodes') != null) {
+        arr = JSON.parse(localStorage.getItem('moduleCodes'));
+    }
+    arr.push(moduleCode);
+    localStorage.setItem('moduleCodes',JSON.stringify(arr));
+}
+
+function removeModuleCode(moduleCode) {
+    var arr = JSON.parse(localStorage.getItem('moduleCodes'));
+    var index = arr.indexOf(moduleCode);
+    arr.splice(index, 1);
+    localStorage.setItem('moduleCodes', JSON.stringify(arr));
+}
+
+
+function checkSelectedModuleCodeExists(moduleCode) {
+    var arr = JSON.parse(localStorage.getItem('moduleCodes'));
+    if(arr == null) return false;
+    var index = arr.indexOf(moduleCode);
+    if (index == -1) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+
+
 /*
     NAVIGATION SCROLL FOR NAVBAR
 */
@@ -190,17 +221,13 @@ $('a[href*="#"]')
 /* 
     LOAD THE AUTOCOMPLETE 
 */
-
- $.getJSON("vendors/data/moduleList.json", function(data) {
-          var list = data.map(function(i){return i.moduleCode + " - " + i.title});
-          new Awesomplete(document.querySelector("#moduleSearchDiv input"),{ 
+ var list = moduleLists.map(function(i){return i.moduleCode + " - " + i.title});
+ var engine = new Awesomplete(document.querySelector("#moduleSearchDiv input"),{ 
              list: list,
              minChars: 1,
              maxItems: 10,
              autoFirst: true
           })
- })
-
   
  
 /*
@@ -214,6 +241,25 @@ function makeSortable() {
   }).disableSelection();
 };
 
+
+function highlightRow(moduleCode) {
+    var numRows = $('.js--modTable tbody tr').length;
+    var currRow = $('.js--modTable tbody tr').first();
+    for(var i = 0; i < numRows; i++) {
+        var code = currRow.find('th').text();
+        if (code == moduleCode) {
+            currRow.addClass('animated');
+            currRow.addClass('flash');
+            currRow.on('animationend', function(){
+                currRow.removeClass('animated');
+                currRow.removeClass('flash');
+            })
+            break;
+        }
+        currRow = currRow.next();
+    }
+}
+
 /*
     ADD THE SELECTED MODULE FROM THE SEARCH BAR TO THE MODULE TABLE
 */
@@ -223,16 +269,26 @@ $("input.awesomplete").on("awesomplete-selectcomplete", function(){
     for(var i = 0; i < arr.length; i++) {
         arr[i] = arr[i].trim(); 
     }
-    $(".js--modTable tbody").append(
+    if (checkSelectedModuleCodeExists(arr[0])) {
+        highlightRow(arr[0]);
+        $('.js--added-module').show(200);
+        setTimeout(function(){
+        $('.js--added-module').hide(300);
+        }, 1500);
+    } else {
+        $(".js--modTable tbody").append(
         "<tr><th scope='row'>" 
                 + arr[0] + 
             "</th><td>" +
                 arr[1] +
             "</td><td class='deleteCell'><div class = 'buttonContainer'><button type=\"button\" class=\"close deleteModule\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button></div></td>");
-    setModuleList();
+        setModuleList();
+        updateNumSems();
+        setSelectedModuleCode(arr[0]);
+     
+    }
     $("input.awesomplete").val("");
-    updateNumSems();
- 
+    
 });
 
 /*
@@ -241,7 +297,10 @@ $("input.awesomplete").on("awesomplete-selectcomplete", function(){
 
 
 $(document).on('click','.deleteModule', function(){
-    $(this).parent().parent().parent().remove();
+    var tr = $(this).parent().parent().parent();
+    var moduleCode = tr.find('th').text();
+    removeModuleCode(moduleCode);
+    tr.remove();
     setModuleList();
     updateNumSems();
 })
@@ -274,6 +333,9 @@ function successfulSaveAlert() {
         }, 1500);
 }
 
+/*
+    PUSH A NEW PLAN INTO THE PLANS ARRAY
+*/
 
 function updateAndResyncPlans(name, arr) { 
     var obj = makeJSON(name);
@@ -288,7 +350,10 @@ function resyncPlans(arr) {
     successfulSaveAlert();
 }
 
-//CLICKING ON SAVE AS NEW BUTTON
+/*
+    CLICKING ON SAVE AS NEW BUTTON
+*/
+
 $(".saveAsNewButton").on('click', function(){
     if ($('.savePlanBar input').val()==""){
         emptyFieldAlert();
@@ -323,7 +388,9 @@ $(".saveAsNewButton").on('click', function(){
 })
 
 
-//CLICKING ON SAVE BUTTON
+/*
+    CLICKING ON SAVE BUTTON
+*/
 
 $(".saveButton").on('click', function(){
     if ($('.savePlanBar input').val()==""){
@@ -487,8 +554,6 @@ $('body').on('click', '.js--split-sem .dropdown-menu .dropdown-item', function(e
 })
 
 
-//capture current view of the semester and put it in save plans and localStorage, should be repopulated on page load
-//add a "start numbering from" box for the table
 
 
 $("#selectSemStartNumber").change(function(){

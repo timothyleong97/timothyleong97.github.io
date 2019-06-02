@@ -1,7 +1,7 @@
-getModuleList - nothing to change it just returns a string
-setModuleList - nothing to change because getCurrrentModules has been updated
-getCurrentModules - returns modules + ?sep? + breakdown
-repopulateModulesTable
 
+when module is selected, check if module code exists. If it doesnt, set the module code. if it does, show a div that says you have already selected that module
 
-prevent duplicates from being entered into modules
+when module is deleted, remove the module code.
+
+store selected modules in an array:
+["CS1101S", "MA1101R"]

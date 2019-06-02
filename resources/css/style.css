@@ -68,6 +68,10 @@ html {
     margin-left: 10px;
 }
 
+.added-module {
+    display:none;
+}
+
 /*-------------------------*/
 /* PANEL FOR MODULE SPLIT  */
 /*   AND CLEAR TABLE       */
