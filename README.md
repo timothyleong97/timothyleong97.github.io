@@ -29,5 +29,5 @@ Available at https://timothyleong97.github.io/
 
 ### Authors
 
-Leong Jia Hao, Timothy
-Tan Jun Yu
+- Leong Jia Hao, Timothy
+- Tan Jun Yu
