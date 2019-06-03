@@ -8,7 +8,7 @@ repopulatePlansSuggestion();
 repopulateModulesTable();
 repopulateSavePlanBarInput();
 updateNumSems();
-
+makeSortable();
  
 /********************************/
 /*     REUSEABLE FUNCTIONS      */
@@ -157,27 +157,27 @@ function updateNumSems() {
 }
 
 
-function setSelectedModuleCode(moduleCode) {
+function setSelectedModuleName(moduleName) {
     var arr = [];
-    if (localStorage.getItem('moduleCodes') != null) {
-        arr = JSON.parse(localStorage.getItem('moduleCodes'));
+    if (localStorage.getItem('moduleNames') != null) {
+        arr = JSON.parse(localStorage.getItem('moduleNames'));
     }
-    arr.push(moduleCode);
-    localStorage.setItem('moduleCodes',JSON.stringify(arr));
+    arr.push(moduleName);
+    localStorage.setItem('moduleNames',JSON.stringify(arr));
 }
 
-function removeModuleCode(moduleCode) {
-    var arr = JSON.parse(localStorage.getItem('moduleCodes'));
-    var index = arr.indexOf(moduleCode);
+function removeModuleCode(moduleName) {
+    var arr = JSON.parse(localStorage.getItem('moduleNames'));
+    var index = arr.indexOf(moduleName);
     arr.splice(index, 1);
-    localStorage.setItem('moduleCodes', JSON.stringify(arr));
+    localStorage.setItem('moduleNames', JSON.stringify(arr));
 }
 
 
-function checkSelectedModuleCodeExists(moduleCode) {
-    var arr = JSON.parse(localStorage.getItem('moduleCodes'));
+function checkSelectedModuleCodeExists(moduleName) {
+    var arr = JSON.parse(localStorage.getItem('moduleNames'));
     if(arr == null) return false;
-    var index = arr.indexOf(moduleCode);
+    var index = arr.indexOf(moduleName);
     if (index == -1) {
         return false;
     } else {
@@ -242,12 +242,17 @@ function makeSortable() {
 };
 
 
-function highlightRow(moduleCode) {
+function makeRowFlash(moduleName) {
     var numRows = $('.js--modTable tbody tr').length;
     var currRow = $('.js--modTable tbody tr').first();
     for(var i = 0; i < numRows; i++) {
-        var code = currRow.find('th').text();
-        if (code == moduleCode) {
+        var name = currRow.find('td').first().text();
+        if (name == moduleName) {
+             $('html, body').animate({
+                scrollTop: currRow.offset().top -160
+            }, 700);
+            currRow.css('animation-duration','2.8s');
+            currRow.addClass('faster');
             currRow.addClass('animated');
             currRow.addClass('flash');
             currRow.on('animationend', function(){
@@ -269,12 +274,12 @@ $("input.awesomplete").on("awesomplete-selectcomplete", function(){
     for(var i = 0; i < arr.length; i++) {
         arr[i] = arr[i].trim(); 
     }
-    if (checkSelectedModuleCodeExists(arr[0])) {
-        highlightRow(arr[0]);
+    if (checkSelectedModuleCodeExists(arr[1])) {
+        makeRowFlash(arr[1]);
         $('.js--added-module').show(200);
         setTimeout(function(){
         $('.js--added-module').hide(300);
-        }, 1500);
+        }, 3000);
     } else {
         $(".js--modTable tbody").append(
         "<tr><th scope='row'>" 
@@ -284,7 +289,7 @@ $("input.awesomplete").on("awesomplete-selectcomplete", function(){
             "</td><td class='deleteCell'><div class = 'buttonContainer'><button type=\"button\" class=\"close deleteModule\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button></div></td>");
         setModuleList();
         updateNumSems();
-        setSelectedModuleCode(arr[0]);
+        setSelectedModuleName(arr[1]);
      
     }
     $("input.awesomplete").val("");
@@ -415,8 +420,8 @@ $(".saveButton").on('click', function(){
             $('#confirmOverwriteButton').click(function(){
                 arr[index].html = getCurrentModules();
                 resyncPlans(arr);
+                $('#overwritePlanModal').modal('hide');
             })
-            
         } else {
             updateAndResyncPlans(name, arr);
         }
