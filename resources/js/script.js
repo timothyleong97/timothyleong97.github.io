@@ -116,7 +116,7 @@ function repopulateModulesTable() {
         var arr = modulesAndBreakdowns.split("_split_");
         $('.js--modTable tbody').html(arr[0]);
         $('.table-list table').html(arr[1]);    
-        
+        makeSortable();
     }    
 }
 
